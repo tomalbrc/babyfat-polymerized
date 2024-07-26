@@ -14,8 +14,6 @@ import de.tomalbrc.bil.core.model.Model;
 import de.tomalbrc.bil.file.loader.AjModelLoader;
 import eu.pb4.polymer.virtualentity.api.attachment.EntityAttachment;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -42,22 +40,20 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 
 import java.util.Optional;
 
 public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
-	public static ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "ranchu");
+	public static ResourceLocation ID = ResourceLocation.tryBuild(BabyFat.MOD_ID, "ranchu");
 	public static Model model = AjModelLoader.load(ID);
 
 	public static final Ingredient FOOD_ITEMS = Ingredient.of(BFItems.WATER_LETTUCE);
@@ -72,7 +68,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 		super(type, worldIn);
 		this.lookControl = new SmoothSwimmingLookControl(this, 10);
 		this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.02F, 0.1F, true);
-		this.setPathfindingMalus(PathType.WATER, 0.0F);
+		this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
 
 		this.holder = new CustomModelHolder(this, model);
 		EntityAttachment.ofTicking(this.holder, this);
@@ -98,18 +94,19 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
-		if (reason == MobSpawnType.BUCKET) {
-			return spawnDataIn;
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
+		if (mobSpawnType == MobSpawnType.BUCKET) {
+			return spawnGroupData;
 		}
+
 		int i;
-		if(reason == MobSpawnType.SPAWN_EGG){
-			i = worldIn.getRandom().nextInt(302);
-		}else{
-			i = worldIn.getRandom().nextInt(3);
+		if (mobSpawnType == MobSpawnType.SPAWN_EGG) {
+			i = serverLevelAccessor.getRandom().nextInt(302);
+		} else {
+			i = serverLevelAccessor.getRandom().nextInt(3);
 		}
 		this.setVariant(i);
-		return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
+		return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
 	}
 
 	public static boolean checkFishSpawnRules(EntityType<? extends Ranchu> type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -152,11 +149,10 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 
 	@Override
 	public void saveToBucketTag(ItemStack bucket) {
+		CompoundTag compoundnbt = bucket.getOrCreateTag();
 		Bucketable.saveDefaultDataToBucketTag(this, bucket);
-		CustomData.update(DataComponents.BUCKET_ENTITY_DATA, bucket, (compoundTag) -> {
-			compoundTag.putInt("Variant", this.getVariant());
-			compoundTag.putInt("Age", this.getAge());
-		});
+		compoundnbt.putInt("Variant", this.getVariant());
+		compoundnbt.putInt("Age", this.getAge());
 	}
 
 	@Override
@@ -240,7 +236,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	}
 
 	@Override
-	public boolean canBeLeashed() {
+	public boolean canBeLeashed(Player player) {
 		return false;
 	}
 
@@ -252,6 +248,11 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	@Override
 	public boolean removeWhenFarAway(double p_213397_1_) {
 		return !this.fromBucket() && !this.hasCustomName();
+	}
+
+	@Override
+	public boolean canBreatheUnderwater() {
+		return true;
 	}
 
 	@Override

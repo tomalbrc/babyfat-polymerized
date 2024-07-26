@@ -5,13 +5,13 @@ import eu.pb4.polymer.core.api.item.PolymerItem;
 import eu.pb4.polymer.resourcepack.api.PolymerModelData;
 import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,13 +22,13 @@ public class RanchuBucketItem extends MobBucketItem implements PolymerItem {
 
 	public RanchuBucketItem(EntityType<?> entityType, Fluid fluid, Item.Properties builder) {
 		super(entityType, fluid, SoundEvents.BUCKET_EMPTY_FISH, builder);
-		this.modelData = PolymerResourcePackUtils.requestModel(Items.WATER_BUCKET, ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "item/ranchu_bucket"));
+		this.modelData = PolymerResourcePackUtils.requestModel(Items.WATER_BUCKET, ResourceLocation.tryBuild(BabyFat.MOD_ID, "item/ranchu_bucket"));
 	}
 
 	@Override
-	public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
-		super.appendHoverText(itemStack, tooltipContext, list, tooltipFlag);
-		if (itemStack.has(DataComponents.BUCKET_ENTITY_DATA)) {
+	public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
+		super.appendHoverText(itemStack, level, list, tooltipFlag);
+		if (itemStack.hasTag()) {
 			Component domesticated = Component.translatable("tooltip.babyfat.domesticated").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC);
 			list.add(domesticated);
 		}

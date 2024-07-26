@@ -28,7 +28,7 @@ public class BabyFat implements ModInitializer {
 		BFTabs.register();
 
 		var key = ResourceKey.create(Registries.PLACED_FEATURE,
-				ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "water_lettuce"));
+				ResourceLocation.tryBuild(BabyFat.MOD_ID, "water_lettuce"));
 		BiomeModifications.addFeature(BiomeSelectors.tag(BiomeTags.IS_SAVANNA), GenerationStep.Decoration.VEGETAL_DECORATION, key);
 	}
 }

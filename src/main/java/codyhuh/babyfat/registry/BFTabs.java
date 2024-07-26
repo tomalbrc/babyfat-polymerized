@@ -26,6 +26,6 @@ public class BFTabs {
     }
 
     public static void register() {
-        PolymerItemGroupUtils.registerPolymerItemGroup(ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "items"), BF_TAB);
+        PolymerItemGroupUtils.registerPolymerItemGroup(ResourceLocation.tryBuild(BabyFat.MOD_ID, "items"), BF_TAB);
     }
 }

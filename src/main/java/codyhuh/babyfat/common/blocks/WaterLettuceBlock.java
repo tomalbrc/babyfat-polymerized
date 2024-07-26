@@ -15,6 +15,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -26,18 +27,11 @@ public class WaterLettuceBlock extends BushBlock implements BonemealableBlock, P
 	private final PolymerBlockModel blockModel;
 	private final BlockState polymerBlockState;
 
-	public static final MapCodec<WaterLettuceBlock> CODEC = simpleCodec(WaterLettuceBlock::new);
-
 
 	public WaterLettuceBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-		this.blockModel = PolymerBlockModel.of(ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "block/water_lettuce"));
+		this.blockModel = PolymerBlockModel.of(ResourceLocation.tryBuild(BabyFat.MOD_ID, "block/water_lettuce"));
 		this.polymerBlockState = PolymerBlockResourceUtils.requestBlock(BlockModelType.PLANT_BLOCK, blockModel);
-	}
-
-	@Override
-	protected MapCodec<? extends BushBlock> codec() {
-		return CODEC;
 	}
 
 	protected boolean mayPlaceOn(BlockState blockState, BlockGetter level, BlockPos pos) {
@@ -46,12 +40,12 @@ public class WaterLettuceBlock extends BushBlock implements BonemealableBlock, P
 		return (fluidstate.getType() == Fluids.WATER || blockState.is(BlockTags.ICE)) && fluidstate1.getType() == Fluids.EMPTY;
 	}
 
-
 	@Override
-	public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+	public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState, boolean bl) {
 		return true;
 	}
 
+	@Override
 	public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState blockState) {
 		return true;
 	}
@@ -81,6 +75,11 @@ public class WaterLettuceBlock extends BushBlock implements BonemealableBlock, P
 				}
 			}
 		}
+	}
+
+	@Override
+	public Block getPolymerBlock(BlockState state) {
+		return this.getPolymerBlockState(state).getBlock();
 	}
 
 	@Override

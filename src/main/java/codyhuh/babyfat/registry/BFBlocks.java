@@ -13,6 +13,6 @@ public class BFBlocks {
 	public static final Block WATER_LETTUCE = new WaterLettuceBlock(BlockBehaviour.Properties.of().noCollission().instabreak().sound(SoundType.LILY_PAD).noOcclusion());
 
 	public static void register() {
-		Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "water_lettuce"), WATER_LETTUCE);
+		Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.tryBuild(BabyFat.MOD_ID, "water_lettuce"), WATER_LETTUCE);
 	}
 }
