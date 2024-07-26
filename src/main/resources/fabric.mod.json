@@ -3,10 +3,13 @@
   "id": "babyfat",
   "version": "${version}",
   "name": "BabyFat",
-  "description": "",
+  "description": "Baby Fat is a ranchu mod. Server-side fabric port of the Baby Fat Mod. Credits to Tazz, Vaky, Probleyes",
   "icon": "icon@256.png",
   "authors": [
-    ""
+    "Coda",
+    "bagu_chan",
+    "Team Fusion",
+    "tomalbrc"
   ],
   "contact": {
     "repo": "https://github.com/tomalbrc/babyfat-polymerized"
