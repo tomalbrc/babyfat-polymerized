@@ -1,24 +1,31 @@
 package codyhuh.babyfat.registry;
 
 import codyhuh.babyfat.BabyFat;
-import net.minecraft.core.registries.Registries;
+import eu.pb4.polymer.core.api.item.PolymerItemGroupUtils;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.item.Item;
 
 public class BFTabs {
-    public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, BabyFat.MOD_ID);
+    private static ObjectArrayList<Item> CAT= new ObjectArrayList<>();
 
-    public static final RegistryObject<CreativeModeTab> BF_TAB = TABS.register("babyfat_tab",
-            () -> CreativeModeTab.builder()
-                    .title(Component.translatable("itemGroup." + BabyFat.MOD_ID))
-                    .icon(BFItems.RANCHU_BUCKET.get()::getDefaultInstance)
-                    .displayItems((displayParams, output) -> {
-                        for (var item : BFItems.ITEMS.getEntries()) {
-                            output.accept(item.get());
-                        }
-                    })
-                    .build()
-    );
+    public static final CreativeModeTab BF_TAB = CreativeModeTab.builder(null, -1)
+            .title(Component.translatable("itemGroup." + BabyFat.MOD_ID))
+            .icon(BFItems.RANCHU_BUCKET::getDefaultInstance)
+            .displayItems((displayParams, output) -> {
+                for (var item : CAT) {
+                    output.accept(item);
+                }
+            })
+            .build();
+
+    public static void addItem(Item item) {
+        CAT.add(item);
+    }
+
+    public static void register() {
+        PolymerItemGroupUtils.registerPolymerItemGroup(ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "items"), BF_TAB);
+    }
 }

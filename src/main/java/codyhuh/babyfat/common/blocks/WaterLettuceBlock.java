@@ -1,73 +1,77 @@
 package codyhuh.babyfat.common.blocks;
 
+import codyhuh.babyfat.BabyFat;
 import codyhuh.babyfat.registry.BFBlocks;
+import com.mojang.serialization.MapCodec;
+import eu.pb4.polymer.blocks.api.BlockModelType;
+import eu.pb4.polymer.blocks.api.PolymerBlockModel;
+import eu.pb4.polymer.blocks.api.PolymerBlockResourceUtils;
+import eu.pb4.polymer.blocks.api.PolymerTexturedBlock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.PlantType;
 
-public class WaterLettuceBlock extends BushBlock implements BonemealableBlock {
-	protected static final VoxelShape AABB = Block.box(4.0D, -2.0D, 4.0D, 12.0D, 4.0D, 12.0D);
+public class WaterLettuceBlock extends BushBlock implements BonemealableBlock, PolymerTexturedBlock {
+	private final PolymerBlockModel blockModel;
+	private final BlockState polymerBlockState;
 
-	public WaterLettuceBlock(BlockBehaviour.Properties p_i48297_1_) {
-		super(p_i48297_1_);
-	}
+	public static final MapCodec<WaterLettuceBlock> CODEC = simpleCodec(WaterLettuceBlock::new);
 
-	public VoxelShape getShape(BlockState p_220053_1_, BlockGetter p_220053_2_, BlockPos p_220053_3_, CollisionContext p_220053_4_) {
-		Vec3 vec3 = p_220053_1_.getOffset(p_220053_2_, p_220053_3_);
-		return AABB.move(vec3.x, vec3.y, vec3.z);
-	}
 
-	protected boolean mayPlaceOn(BlockState p_200014_1_, BlockGetter p_200014_2_, BlockPos p_200014_3_) {
-		FluidState fluidstate = p_200014_2_.getFluidState(p_200014_3_);
-		FluidState fluidstate1 = p_200014_2_.getFluidState(p_200014_3_.above());
-		return (fluidstate.getType() == Fluids.WATER || p_200014_1_.is(BlockTags.ICE)) && fluidstate1.getType() == Fluids.EMPTY;
+	public WaterLettuceBlock(BlockBehaviour.Properties properties) {
+		super(properties);
+		this.blockModel = PolymerBlockModel.of(ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "block/water_lettuce"));
+		this.polymerBlockState = PolymerBlockResourceUtils.requestBlock(BlockModelType.PLANT_BLOCK, blockModel);
 	}
 
 	@Override
-	public PlantType getPlantType(BlockGetter world, BlockPos pos) {
-		return PlantType.WATER;
+	protected MapCodec<? extends BushBlock> codec() {
+		return CODEC;
 	}
+
+	protected boolean mayPlaceOn(BlockState blockState, BlockGetter level, BlockPos pos) {
+		FluidState fluidstate = level.getFluidState(pos);
+		FluidState fluidstate1 = level.getFluidState(pos.above());
+		return (fluidstate.getType() == Fluids.WATER || blockState.is(BlockTags.ICE)) && fluidstate1.getType() == Fluids.EMPTY;
+	}
+
 
 	@Override
-	public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
+	public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
 		return true;
 	}
 
-	public boolean isBonemealSuccess(Level p_221816_, RandomSource p_221817_, BlockPos p_221818_, BlockState p_221819_) {
+	public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState blockState) {
 		return true;
 	}
 
-	public void performBonemeal(ServerLevel p_221811_, RandomSource p_221812_, BlockPos p_221813_, BlockState p_221814_) {
+	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState blockState) {
 		boolean flag = false;
 		boolean flag1 = false;
 
-		for(BlockPos blockpos : BlockPos.betweenClosed(p_221813_.offset(-1, 0, -1), p_221813_.offset(1, 0, 1))) {
-			BlockState blockstate = p_221811_.getBlockState(blockpos);
+		for(BlockPos blockpos : BlockPos.betweenClosed(pos.offset(-1, 0, -1), pos.offset(1, 0, 1))) {
+			BlockState blockstate = level.getBlockState(blockpos);
 
-			if(blockstate.isAir() && BFBlocks.WATER_LETTUCE.get().defaultBlockState().canSurvive(p_221811_, blockpos)){
-				if(!flag1 && p_221812_.nextBoolean()){
-					p_221811_.setBlock(blockpos, BFBlocks.WATER_LETTUCE.get().defaultBlockState(), 3);
+			if(blockstate.isAir() && BFBlocks.WATER_LETTUCE.defaultBlockState().canSurvive(level, blockpos)){
+				if(!flag1 && random.nextBoolean()){
+					level.setBlock(blockpos, BFBlocks.WATER_LETTUCE.defaultBlockState(), 3);
 					flag1 = true;
 					continue;
 				}
 
-				if(!flag && p_221812_.nextBoolean()){
-					p_221811_.setBlock(blockpos, BFBlocks.WATER_LETTUCE.get().defaultBlockState(), 3);
+				if(!flag && random.nextBoolean()){
+					level.setBlock(blockpos, BFBlocks.WATER_LETTUCE.defaultBlockState(), 3);
 					flag = true;
 					continue;
 				}
@@ -77,5 +81,10 @@ public class WaterLettuceBlock extends BushBlock implements BonemealableBlock {
 				}
 			}
 		}
+	}
+
+	@Override
+	public BlockState getPolymerBlockState(BlockState state) {
+		return this.polymerBlockState;
 	}
 }
