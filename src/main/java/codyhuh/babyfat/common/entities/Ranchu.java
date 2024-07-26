@@ -174,6 +174,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	}
 
 	public void setVariant(int variant) {
+		this.holder.getVariantController().setVariant(String.valueOf(variant));
 		this.variant = variant;
 	}
 
