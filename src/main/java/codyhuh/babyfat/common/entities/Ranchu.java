@@ -419,4 +419,14 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	public AnimatedEntityHolder getHolder() {
 		return this.holder;
 	}
+
+	@Override
+	public void setAge(int age) {
+		super.setAge(age);
+		if (age < 0) {
+			this.holder.setScale(0.5f);
+		} else {
+			this.holder.setScale(1.f);
+		}
+	}
 }
