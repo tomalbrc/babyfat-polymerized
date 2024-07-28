@@ -99,13 +99,15 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 			return spawnGroupData;
 		}
 
-		int i;
-		if (mobSpawnType == MobSpawnType.SPAWN_EGG) {
-			i = serverLevelAccessor.getRandom().nextInt(302);
-		} else {
-			i = serverLevelAccessor.getRandom().nextInt(3);
+		if (mobSpawnType != MobSpawnType.BREEDING) {
+			int i;
+			if (mobSpawnType == MobSpawnType.SPAWN_EGG) {
+				i = serverLevelAccessor.getRandom().nextInt(302);
+			} else {
+				i = serverLevelAccessor.getRandom().nextInt(3);
+			}
+			this.setVariant(i);
 		}
-		this.setVariant(i);
 		return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
 	}
 
