@@ -4,7 +4,7 @@
   "version": "${version}",
   "name": "BabyFat",
   "description": "Baby Fat is a ranchu mod. Server-side fabric port of the Baby Fat Mod. Credits to Tazz, Vaky, Probleyes",
-  "icon": "icon@256.png",
+  "icon": "babyfat-icon.png",
   "authors": [
     "Coda",
     "bagu_chan",
