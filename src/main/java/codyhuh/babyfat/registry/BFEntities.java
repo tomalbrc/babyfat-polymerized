@@ -27,8 +27,8 @@ public class BFEntities {
 		BiomeHelper.addSpawn(RANCHU, 30, 2, 4, BiomeSelectors.tag(BiomeTags.IS_RIVER));
 	}
 
-	private static <T extends Entity> EntityType<T> register(ResourceLocation id, FabricEntityType.Builder builder) {
-		EntityType<T> type = builder.build();
+	private static <T extends Entity> EntityType<T> register(ResourceLocation id, EntityType.Builder<T> builder) {
+		EntityType<T> type = builder.build(Ranchu.ID.toString());
 		PolymerEntityUtils.registerType(type);
 		return Registry.register(BuiltInRegistries.ENTITY_TYPE, id, type);
 	}
