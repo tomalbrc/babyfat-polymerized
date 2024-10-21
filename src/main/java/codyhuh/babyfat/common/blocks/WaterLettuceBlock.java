@@ -21,21 +21,23 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.NotNull;
+import xyz.nucleoid.packettweaker.PacketContext;
 
 public class WaterLettuceBlock extends BushBlock implements BonemealableBlock, PolymerTexturedBlock {
-	private final PolymerBlockModel blockModel;
-	private final BlockState polymerBlockState;
+    private final BlockState polymerBlockState;
 
 	public static final MapCodec<WaterLettuceBlock> CODEC = simpleCodec(WaterLettuceBlock::new);
 
 
 	public WaterLettuceBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-		this.blockModel = PolymerBlockModel.of(ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "block/water_lettuce"));
+        PolymerBlockModel blockModel = PolymerBlockModel.of(ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "block/water_lettuce"));
 		this.polymerBlockState = PolymerBlockResourceUtils.requestBlock(BlockModelType.PLANT_BLOCK, blockModel);
 	}
 
 	@Override
+	@NotNull
 	protected MapCodec<? extends BushBlock> codec() {
 		return CODEC;
 	}
@@ -84,7 +86,7 @@ public class WaterLettuceBlock extends BushBlock implements BonemealableBlock, P
 	}
 
 	@Override
-	public BlockState getPolymerBlockState(BlockState state) {
+	public BlockState getPolymerBlockState(BlockState state, PacketContext context) {
 		return this.polymerBlockState;
 	}
 }

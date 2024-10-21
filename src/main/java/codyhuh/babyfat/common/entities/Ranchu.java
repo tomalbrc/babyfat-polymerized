@@ -15,7 +15,6 @@ import de.tomalbrc.bil.file.loader.AjModelLoader;
 import eu.pb4.polymer.virtualentity.api.attachment.EntityAttachment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -40,6 +39,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bucketable;
+import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
@@ -51,8 +51,8 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 
 import java.util.Optional;
 
@@ -66,7 +66,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 
 	private boolean fromBucket;
 
-	private final LivingEntityHolder holder;
+	private final LivingEntityHolder<?> holder;
 
 	public Ranchu(EntityType<? extends Animal> type, Level worldIn) {
 		super(type, worldIn);
@@ -88,7 +88,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {
-		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.MOVEMENT_SPEED, 2.5D);
+		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.MOVEMENT_SPEED, 2.5D).add(Attributes.TEMPT_RANGE, 10);
 	}
 
 	@Override
@@ -98,14 +98,14 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn) {
-		if (reason == MobSpawnType.BUCKET) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, EntitySpawnReason reason, @Nullable SpawnGroupData spawnDataIn) {
+		if (reason == EntitySpawnReason.BUCKET) {
 			return spawnDataIn;
 		}
 
-		if (reason != MobSpawnType.BREEDING) {
+		if (reason != EntitySpawnReason.BREEDING) {
 			int i;
-			if (reason == MobSpawnType.SPAWN_EGG) {
+			if (reason == EntitySpawnReason.SPAWN_ITEM_USE) {
 				i = worldIn.getRandom().nextInt(302);
 			} else {
 				i = worldIn.getRandom().nextInt(3);
@@ -116,7 +116,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 		return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn);
 	}
 
-	public static boolean checkFishSpawnRules(EntityType<? extends Ranchu> type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
+	public static boolean checkFishSpawnRules(EntityType<? extends Ranchu> type, LevelAccessor worldIn, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
 		return worldIn.getBlockState(pos).is(Blocks.WATER) && worldIn.getBlockState(pos.above()).is(Blocks.WATER);
 	}
 
@@ -164,11 +164,13 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	}
 
 	@Override
+	@NotNull
 	public ItemStack getBucketItemStack() {
 		return new ItemStack(BFItems.RANCHU_BUCKET);
 	}
 
 	@Override
+	@NotNull
 	public SoundEvent getPickupSound() {
 		return SoundEvents.BUCKET_EMPTY_FISH;
 	}
@@ -249,6 +251,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	}
 
 	@Override
+	@NotNull
 	protected PathNavigation createNavigation(Level worldIn) {
 		return new WaterBoundPathNavigation(this, worldIn);
 	}
@@ -279,12 +282,11 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	}
 
 	@Override
-	public void customServerAiStep() {
-		super.customServerAiStep();
+	public void customServerAiStep(ServerLevel serverLevel) {
+		super.customServerAiStep(serverLevel);
 
 		if (this.forcedAgeTimer > 0) {
 			if (this.forcedAgeTimer % 4 == 0) {
-				ServerLevel serverLevel = (ServerLevel) this.level();
 				serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getRandomX(1), this.getRandomY() + 0.5, this.getRandomZ(1), 0, 0.0, 0.0, 0.0, 0.0);
 			}
 
@@ -334,7 +336,9 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	@Nullable
 	@Override
 	public Ranchu getBreedOffspring(ServerLevel serverLevel, AgeableMob ranchuB) {
-		Ranchu child = BFEntities.RANCHU.create(serverLevel);
+		Ranchu child = BFEntities.RANCHU.create(serverLevel, EntitySpawnReason.BREEDING);
+		assert child != null;
+
 		RandomSource rand = this.getRandom();
 		if (ranchuB instanceof Ranchu) {
 			// Feral + Feral
@@ -366,6 +370,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	}
 
 	@Override
+	@NotNull
 	protected SoundEvent getSwimSound() {
 		return SoundEvents.FISH_SWIM;
 	}
@@ -389,6 +394,8 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 		return new ItemStack(BFItems.RANCHU_SPAWN_EGG);
 	}
 
+	@Override
+	@NotNull
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		Optional<InteractionResult> result = Bucketable.bucketMobPickup(player, hand, this);
 
@@ -408,7 +415,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 				if (this.isBaby()) {
 					this.usePlayerItem(player, hand, itemstack);
 					this.ageUp(getSpeedUpSecondsWhenFeeding(-i), true);
-					return InteractionResult.sidedSuccess(this.level().isClientSide);
+					return InteractionResult.SUCCESS_SERVER;
 				}
 
 				if (this.level().isClientSide) {

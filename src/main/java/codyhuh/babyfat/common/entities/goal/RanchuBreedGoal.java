@@ -32,7 +32,10 @@ public class RanchuBreedGoal extends Goal {
 	}
 
 	public boolean canUse() {
-		List<? extends Ranchu> list = animal.level().getNearbyEntities(this.mateClass, PARTNER_TARGETING, this.animal, this.animal.getBoundingBox().inflate(8.0D));
+		if (!(this.animal.level() instanceof ServerLevel serverLevel))
+			return false;
+
+        List<? extends Ranchu> list = serverLevel.getNearbyEntities(this.mateClass, PARTNER_TARGETING, this.animal, this.animal.getBoundingBox().inflate(8.0D));
 
 		assert !this.animal.isBaby();
 
@@ -71,7 +74,10 @@ public class RanchuBreedGoal extends Goal {
 
 	@Nullable
 	private Ranchu getNearbyMate() {
-		List<? extends Ranchu> list = this.world.getNearbyEntities(this.mateClass, PARTNER_TARGETING, this.animal, this.animal.getBoundingBox().inflate(20.0D));
+		if (!(this.animal.level() instanceof ServerLevel serverLevel))
+			return null;
+
+		List<? extends Ranchu> list = serverLevel.getNearbyEntities(this.mateClass, PARTNER_TARGETING, this.animal, this.animal.getBoundingBox().inflate(20.0D));
 		double d0 = Double.MAX_VALUE;
 		Ranchu animalentity = null;
 

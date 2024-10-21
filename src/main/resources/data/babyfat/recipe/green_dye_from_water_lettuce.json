@@ -1,9 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "item": "babyfat:water_lettuce"
-    }
+    "babyfat:water_lettuce"
   ],
   "result": {
     "id": "minecraft:green_dye",
