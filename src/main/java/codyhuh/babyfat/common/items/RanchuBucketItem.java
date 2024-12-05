@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.material.Fluid;
 import xyz.nucleoid.packettweaker.PacketContext;
@@ -17,7 +18,7 @@ import java.util.List;
 public class RanchuBucketItem extends MobBucketItem implements PolymerItem {
 	private final ResourceLocation modelData;
 
-	public RanchuBucketItem(EntityType<?> entityType, Fluid fluid, Item.Properties builder) {
+	public RanchuBucketItem(EntityType<? extends Mob> entityType, Fluid fluid, Item.Properties builder) {
 		super(entityType, fluid, SoundEvents.BUCKET_EMPTY_FISH, builder);
 		this.modelData = ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "ranchu_bucket");
 	}
