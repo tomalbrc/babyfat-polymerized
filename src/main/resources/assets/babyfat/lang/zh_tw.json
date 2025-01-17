@@ -1,0 +1,11 @@
+{
+  "item.babyfat.ranchu_spawn_egg": "金魚",
+  "item.babyfat.ranchu_bucket": "金魚桶",
+
+  "entity.babyfat.ranchu": "金魚",
+  "block.babyfat.water_lettuce": "水芙蓉",
+
+  "tooltip.babyfat.domesticated": "已馴服",
+
+  "itemGroup.babyfat": "Baby Fat"
+}
