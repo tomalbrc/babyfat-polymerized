@@ -209,9 +209,9 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 		return super.requiresCustomPersistence() || this.isFromBucket();
 	}
 
-	protected void updateAir(int p_209207_1_) {
+	protected void updateAir(int air) {
 		if (this.isAlive() && !this.isInWater()) {
-			this.setAirSupply(p_209207_1_ - 1);
+			this.setAirSupply(air - 1);
 			if (this.getAirSupply() == -20) {
 				this.setAirSupply(0);
 				this.hurt(damageSources().drown(), 2.0F);
