@@ -39,7 +39,6 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bucketable;
-import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
@@ -96,8 +95,8 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 		return stack.is(BFBlocks.WATER_LETTUCE.asItem());
 	}
 
-	@Nullable
 	@Override
+	@NotNull
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, EntitySpawnReason reason, @Nullable SpawnGroupData spawnDataIn) {
 		if (reason == EntitySpawnReason.BUCKET) {
 			return spawnDataIn;
@@ -150,8 +149,8 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	@Override
 	public void loadFromBucketTag(CompoundTag compound) {
 		Bucketable.loadDefaultDataFromBucketTag(this, compound);
-		this.setVariant(compound.getInt("Variant"));
-		this.setAge(compound.getInt("Age"));
+		this.setVariant(compound.getInt("Variant").orElseThrow());
+		this.setAge(compound.getInt("Age").orElseThrow());
 	}
 
 	@Override
@@ -200,9 +199,9 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		setVariant(Mth.clamp(compound.getInt("Variant"), 0, MAX_VARIANTS - 1));
-		this.setFromBucket(compound.getBoolean("FromBucket"));
-		this.setFromBucket(compound.getBoolean("Bucketed"));
+		setVariant(Mth.clamp(compound.getInt("Variant").orElseThrow(), 0, MAX_VARIANTS - 1));
+		this.setFromBucket(compound.getBoolean("FromBucket").orElseThrow());
+		this.setFromBucket(compound.getBoolean("Bucketed").orElseThrow());
 	}
 
 	@Override
@@ -211,7 +210,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	}
 
 	protected void updateAir(int p_209207_1_) {
-		if (this.isAlive() && !this.isInWaterOrBubble()) {
+		if (this.isAlive() && !this.isInWater()) {
 			this.setAirSupply(p_209207_1_ - 1);
 			if (this.getAirSupply() == -20) {
 				this.setAirSupply(0);

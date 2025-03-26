@@ -16,7 +16,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.VegetationBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
@@ -24,7 +24,7 @@ import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.NotNull;
 import xyz.nucleoid.packettweaker.PacketContext;
 
-public class WaterLettuceBlock extends BushBlock implements BonemealableBlock, PolymerTexturedBlock {
+public class WaterLettuceBlock extends VegetationBlock implements BonemealableBlock, PolymerTexturedBlock {
     private final BlockState polymerBlockState;
 
 	public static final MapCodec<WaterLettuceBlock> CODEC = simpleCodec(WaterLettuceBlock::new);
@@ -38,7 +38,7 @@ public class WaterLettuceBlock extends BushBlock implements BonemealableBlock, P
 
 	@Override
 	@NotNull
-	protected MapCodec<? extends BushBlock> codec() {
+	public MapCodec<? extends VegetationBlock> codec() {
 		return CODEC;
 	}
 

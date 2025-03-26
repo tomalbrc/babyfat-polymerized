@@ -10,10 +10,11 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.material.Fluid;
 import xyz.nucleoid.packettweaker.PacketContext;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 public class RanchuBucketItem extends MobBucketItem implements PolymerItem {
 	private final ResourceLocation modelData;
@@ -24,11 +25,11 @@ public class RanchuBucketItem extends MobBucketItem implements PolymerItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
-		super.appendHoverText(itemStack, tooltipContext, list, tooltipFlag);
+	public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, TooltipDisplay tooltipDisplay, Consumer<Component> consumer, TooltipFlag tooltipFlag) {
+		super.appendHoverText(itemStack, tooltipContext, tooltipDisplay, consumer, tooltipFlag);
 		if (itemStack.has(DataComponents.BUCKET_ENTITY_DATA)) {
 			Component domesticated = Component.translatable("tooltip.babyfat.domesticated").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC);
-			list.add(domesticated);
+			consumer.accept(domesticated);
 		}
 	}
 
