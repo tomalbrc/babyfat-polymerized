@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "codyhuh.babyfat.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "V1460Mixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
