@@ -4,14 +4,15 @@ import codyhuh.babyfat.BabyFat;
 import codyhuh.babyfat.common.items.PolymerPlaceOnWaterBlockItem;
 import codyhuh.babyfat.common.items.RanchuBucketItem;
 import codyhuh.babyfat.common.items.VanillaPolymerSpawnEggItem;
-import eu.pb4.polymer.core.api.item.PolymerSpawnEggItem;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.material.Fluids;
 
 import java.util.function.Function;
@@ -26,7 +27,7 @@ public class BFItems {
 	public static final Item RANCHU_BUCKET = registerItem(
 			ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "ranchu_bucket"),
 			x -> new RanchuBucketItem(BFEntities.RANCHU, Fluids.WATER, x),
-			new Item.Properties().stacksTo(1)
+			new Item.Properties().stacksTo(1).component(DataComponents.BUCKET_ENTITY_DATA, CustomData.EMPTY)
 	);
 
 	public static final Item RANCHU_SPAWN_EGG = registerItem(
