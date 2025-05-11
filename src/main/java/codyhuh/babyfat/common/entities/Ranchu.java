@@ -11,7 +11,7 @@ import de.tomalbrc.bil.api.AnimatedEntity;
 import de.tomalbrc.bil.api.AnimatedEntityHolder;
 import de.tomalbrc.bil.core.holder.entity.living.LivingEntityHolder;
 import de.tomalbrc.bil.core.model.Model;
-import de.tomalbrc.bil.file.loader.AjModelLoader;
+import de.tomalbrc.bil.file.loader.AjBlueprintLoader;
 import eu.pb4.polymer.virtualentity.api.attachment.EntityAttachment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
@@ -57,7 +57,7 @@ import java.util.Optional;
 
 public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	public static ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "ranchu");
-	public static Model model = AjModelLoader.load(ID);
+	public static Model model = AjBlueprintLoader.load(ID);
 
 	public static final Ingredient FOOD_ITEMS = Ingredient.of(BFItems.WATER_LETTUCE);
 	public static final int MAX_VARIANTS = 303;
