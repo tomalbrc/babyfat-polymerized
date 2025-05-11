@@ -149,8 +149,8 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	@Override
 	public void loadFromBucketTag(CompoundTag compound) {
 		Bucketable.loadDefaultDataFromBucketTag(this, compound);
-		this.setVariant(compound.getInt("Variant").orElseThrow());
-		this.setAge(compound.getInt("Age").orElseThrow());
+		compound.getInt("Variant").ifPresent(this::setVariant);
+		compound.getInt("Age").ifPresent(this::setAge);
 	}
 
 	@Override
