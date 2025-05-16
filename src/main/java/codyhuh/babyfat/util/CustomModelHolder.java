@@ -20,7 +20,7 @@ public class CustomModelHolder extends LivingEntityHolder<Ranchu> {
     protected void applyPose(Pose pose, DisplayWrapper display) {
         var translation = pose.readOnlyTranslation().sub(0.f, this.parent.getBbHeight()-(this.parent.isBaby() ? -0.2f : 0.075f), 0, new Vector3f());
         Matrix4f matrix4f = new Matrix4f();
-        matrix4f.translate(translation);
+        matrix4f.translate(translation.mul(this.entityScale));
         matrix4f.rotate(pose.readOnlyLeftRotation());
         matrix4f.scale(pose.readOnlyScale().mul(this.entityScale, new Vector3f()));
         matrix4f.rotate(pose.readOnlyRightRotation());
