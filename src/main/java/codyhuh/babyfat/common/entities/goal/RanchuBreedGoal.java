@@ -31,6 +31,7 @@ public class RanchuBreedGoal extends Goal {
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 	}
 
+	@Override
 	public boolean canUse() {
 		if (!(this.animal.level() instanceof ServerLevel serverLevel))
 			return false;
@@ -51,15 +52,18 @@ public class RanchuBreedGoal extends Goal {
 		}
 	}
 
+	@Override
 	public boolean canContinueToUse() {
 		return this.targetMate.isAlive() && this.targetMate.isInLove() && this.spawnBabyDelay < 60;
 	}
 
+	@Override
 	public void stop() {
 		this.targetMate = null;
 		this.spawnBabyDelay = 0;
 	}
 
+	@Override
 	public void tick() {
 		this.animal.getLookControl().setLookAt(this.targetMate, 10.0F, (float) this.animal.getMaxHeadXRot());
 		this.animal.getNavigation().moveTo(this.targetMate, this.moveSpeed);

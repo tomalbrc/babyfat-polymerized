@@ -5,10 +5,16 @@ import de.tomalbrc.bil.core.holder.entity.living.LivingEntityHolder;
 import de.tomalbrc.bil.core.holder.wrapper.DisplayWrapper;
 import de.tomalbrc.bil.core.model.Model;
 import de.tomalbrc.bil.core.model.Pose;
+import net.minecraft.network.protocol.game.ClientboundUpdateAttributesPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+
+import java.util.List;
 
 public class CustomModelHolder extends LivingEntityHolder<Ranchu> {
 
@@ -42,5 +48,15 @@ public class CustomModelHolder extends LivingEntityHolder<Ranchu> {
         } else {
             this.applyPose(pose, display);
         }
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key, Object object) {
+        super.onSyncedDataUpdated(key, object);
+
+        var attributeInstance = new AttributeInstance(Attributes.SCALE, (instance) -> {});
+        attributeInstance.setBaseValue(0.01);
+        var attributesPacket = new ClientboundUpdateAttributesPacket(this.collisionElement.getEntityId(), List.of(attributeInstance));
+        sendPacket(attributesPacket);
     }
 }
