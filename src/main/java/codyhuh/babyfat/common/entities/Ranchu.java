@@ -49,6 +49,8 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -98,7 +100,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	@Override
 	@NotNull
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, EntitySpawnReason reason, @Nullable SpawnGroupData spawnDataIn) {
-		if (reason == EntitySpawnReason.BUCKET) {
+		if (reason == EntitySpawnReason.BUCKET && spawnDataIn != null) {
 			return spawnDataIn;
 		}
 
@@ -189,19 +191,19 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
-		compound.putInt("Variant", getVariant());
-		compound.putBoolean("FromBucket", this.isFromBucket());
-		compound.putBoolean("Bucketed", this.fromBucket());
+	public void addAdditionalSaveData(ValueOutput valueOutput) {
+		super.addAdditionalSaveData(valueOutput);
+		valueOutput.putInt("Variant", getVariant());
+		valueOutput.putBoolean("FromBucket", this.isFromBucket());
+		valueOutput.putBoolean("Bucketed", this.fromBucket());
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
 		setVariant(Mth.clamp(compound.getInt("Variant").orElseThrow(), 0, MAX_VARIANTS - 1));
-		this.setFromBucket(compound.getBoolean("FromBucket").orElseThrow());
-		this.setFromBucket(compound.getBoolean("Bucketed").orElseThrow());
+		this.setFromBucket(compound.getBooleanOr("FromBucket", false));
+		this.setFromBucket(compound.getBooleanOr("Bucketed", false));
 	}
 
 	@Override
