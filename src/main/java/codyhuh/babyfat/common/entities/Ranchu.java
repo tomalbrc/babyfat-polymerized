@@ -329,11 +329,6 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 		}
 	}
 
-	@Override
-	protected boolean shouldDespawnInPeaceful() {
-		return false;
-	}
-
 	@Nullable
 	@Override
 	public Ranchu getBreedOffspring(ServerLevel serverLevel, AgeableMob ranchuB) {
@@ -406,7 +401,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 			ItemStack itemstack = player.getItemInHand(hand);
 			if (this.isFood(itemstack)) {
 				int i = this.getAge();
-				if (!this.level().isClientSide && i == 0 && this.canFallInLove()) {
+				if (!this.level().isClientSide() && i == 0 && this.canFallInLove()) {
 					this.usePlayerItem(player, hand, itemstack);
 					this.setInLove(player);
 					this.setInLoveTime(24000);
@@ -419,7 +414,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 					return InteractionResult.SUCCESS_SERVER;
 				}
 
-				if (this.level().isClientSide) {
+				if (this.level().isClientSide()) {
 					return InteractionResult.CONSUME;
 				}
 			}

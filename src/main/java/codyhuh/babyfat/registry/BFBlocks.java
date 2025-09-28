@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import java.util.function.Function;
 
 public class BFBlocks {
-	public static final Block WATER_LETTUCE = registerBlock(ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "water_lettuce"), WaterLettuceBlock::new, BlockBehaviour.Properties.of().noCollission().instabreak().sound(SoundType.LILY_PAD).noOcclusion());
+	public static final Block WATER_LETTUCE = registerBlock(ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "water_lettuce"), WaterLettuceBlock::new, BlockBehaviour.Properties.of().noCollision().instabreak().sound(SoundType.LILY_PAD).noOcclusion());
 
 	public static void register() {
 	}

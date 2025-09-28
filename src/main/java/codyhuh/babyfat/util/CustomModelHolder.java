@@ -5,6 +5,7 @@ import de.tomalbrc.bil.core.holder.entity.living.LivingEntityHolder;
 import de.tomalbrc.bil.core.holder.wrapper.DisplayWrapper;
 import de.tomalbrc.bil.core.model.Model;
 import de.tomalbrc.bil.core.model.Pose;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -17,7 +18,7 @@ public class CustomModelHolder extends LivingEntityHolder<Ranchu> {
     }
 
     @Override
-    protected void applyPose(Pose pose, DisplayWrapper display) {
+    protected void applyPose(ServerPlayer serverPlayer, Pose pose, DisplayWrapper display) {
         var translation = pose.readOnlyTranslation().sub(0.f, this.parent.getBbHeight()-(this.parent.isBaby() ? -0.2f : 0.075f), 0, new Vector3f());
         Matrix4f matrix4f = new Matrix4f();
         matrix4f.translate(translation.mul(this.entityScale));
@@ -31,16 +32,16 @@ public class CustomModelHolder extends LivingEntityHolder<Ranchu> {
                 .rotateLocalY(-(parent.yRotO) * Mth.DEG_TO_RAD)
         ;
 
-        display.element().setTransformation(matrix4f);
-        display.element().startInterpolationIfDirty();
+        display.element().setTransformation(serverPlayer, matrix4f);
+        display.element().startInterpolationIfDirty(serverPlayer);
     }
 
     @Override
-    public void updateElement(DisplayWrapper display, @Nullable Pose pose) {
+    public void updateElement(ServerPlayer serverPlayer, DisplayWrapper<?> display, @Nullable Pose pose) {
         if (pose == null) {
-            this.applyPose(display.getLastPose(), display);
+            this.applyPose(serverPlayer, display.getLastPose(serverPlayer), display);
         } else {
-            this.applyPose(pose, display);
+            this.applyPose(serverPlayer, pose, display);
         }
     }
 }
