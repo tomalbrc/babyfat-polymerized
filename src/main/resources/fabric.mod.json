@@ -31,7 +31,7 @@
     "polymer-resource-pack": "*",
     "polymer-core": "*",
     "polymer-virtual-entity": "*",
-    "bil": ">=2.0.0"
+    "bil": ">=2.0.0-"
   },
   "accessWidener": "babyfat.accesswidener"
 }
