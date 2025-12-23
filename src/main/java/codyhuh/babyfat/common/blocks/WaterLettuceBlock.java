@@ -8,7 +8,7 @@ import eu.pb4.polymer.blocks.api.PolymerBlockModel;
 import eu.pb4.polymer.blocks.api.PolymerBlockResourceUtils;
 import eu.pb4.polymer.blocks.api.PolymerTexturedBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -32,7 +32,7 @@ public class WaterLettuceBlock extends VegetationBlock implements BonemealableBl
 
 	public WaterLettuceBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-        PolymerBlockModel blockModel = PolymerBlockModel.of(ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "block/water_lettuce"));
+        PolymerBlockModel blockModel = PolymerBlockModel.of(Identifier.fromNamespaceAndPath(BabyFat.MOD_ID, "block/water_lettuce"));
 		this.polymerBlockState = PolymerBlockResourceUtils.requestBlock(BlockModelType.PLANT_BLOCK, blockModel);
 	}
 

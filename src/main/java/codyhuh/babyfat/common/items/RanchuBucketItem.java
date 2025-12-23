@@ -5,7 +5,7 @@ import eu.pb4.polymer.core.api.item.PolymerItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -17,11 +17,11 @@ import xyz.nucleoid.packettweaker.PacketContext;
 import java.util.function.Consumer;
 
 public class RanchuBucketItem extends MobBucketItem implements PolymerItem {
-	private final ResourceLocation modelData;
+	private final Identifier modelData;
 
 	public RanchuBucketItem(EntityType<? extends Mob> entityType, Fluid fluid, Item.Properties builder) {
 		super(entityType, fluid, SoundEvents.BUCKET_EMPTY_FISH, builder);
-		this.modelData = ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "ranchu_bucket");
+		this.modelData = Identifier.fromNamespaceAndPath(BabyFat.MOD_ID, "ranchu_bucket");
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class RanchuBucketItem extends MobBucketItem implements PolymerItem {
 	}
 
 	@Override
-	public ResourceLocation getPolymerItemModel(ItemStack itemStack, PacketContext context) {
+	public Identifier getPolymerItemModel(ItemStack itemStack, PacketContext context) {
 		return this.modelData;
 	}
 }

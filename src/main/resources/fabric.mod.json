@@ -26,12 +26,12 @@
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",
-    "minecraft": ">=1.21.9-",
+    "minecraft": ">=1.21.11",
     "fabric-api": "*",
     "polymer-resource-pack": "*",
     "polymer-core": "*",
     "polymer-virtual-entity": "*",
-    "bil": ">=1.5.6"
+    "bil": ">=2.0.0"
   },
   "accessWidener": "babyfat.accesswidener"
 }

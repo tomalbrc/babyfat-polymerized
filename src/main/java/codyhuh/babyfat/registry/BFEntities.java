@@ -10,7 +10,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -20,7 +20,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 
 public class BFEntities {
 
-	public static final EntityType<Ranchu> RANCHU = register(ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "ranchu"), FabricEntityType.Builder.createMob(Ranchu::new, MobCategory.WATER_CREATURE, x -> x
+	public static final EntityType<Ranchu> RANCHU = register(Identifier.fromNamespaceAndPath(BabyFat.MOD_ID, "ranchu"), FabricEntityType.Builder.createMob(Ranchu::new, MobCategory.WATER_CREATURE, x -> x
             .spawnRestriction(SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING, Ranchu::checkFishSpawnRules)
             .defaultAttributes(Ranchu::createAttributes)
 	).sized(0.5f, 0.5f));
@@ -29,7 +29,7 @@ public class BFEntities {
 		BiomeHelper.addSpawn(RANCHU, 30, 2, 4, BiomeSelectors.tag(BiomeTags.IS_RIVER));
 	}
 
-	private static <T extends Entity> EntityType<T> register(ResourceLocation id, EntityType.Builder<T> builder) {
+	private static <T extends Entity> EntityType<T> register(Identifier id, EntityType.Builder<T> builder) {
 		EntityType<T> type = builder.build(ResourceKey.create(Registries.ENTITY_TYPE, Ranchu.ID));
 		PolymerEntityUtils.registerType(type);
 		return Registry.register(BuiltInRegistries.ENTITY_TYPE, id, type);

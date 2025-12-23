@@ -17,7 +17,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -58,7 +58,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
-	public static ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "ranchu");
+	public static Identifier ID = Identifier.fromNamespaceAndPath(BabyFat.MOD_ID, "ranchu");
 	public static Model model = AjBlueprintLoader.load(ID);
 
 	public static final Ingredient FOOD_ITEMS = Ingredient.of(BFItems.WATER_LETTUCE);
@@ -267,7 +267,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 		if (!this.isInWater() && this.onGround() && this.verticalCollision) {
 			this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F, 0.4F, (this.random.nextFloat() * 2.0F - 1.0F) * 0.05F));
 			this.setOnGround(false);
-			this.hasImpulse = true;
+			this.needsSync = true;
 			this.playSound(this.getFlopSound(), this.getSoundVolume(), this.getVoicePitch());
 		}
 

@@ -4,7 +4,7 @@ import codyhuh.babyfat.BabyFat;
 import eu.pb4.polymer.core.api.item.PolymerItemGroupUtils;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 
@@ -26,6 +26,6 @@ public class BFTabs {
     }
 
     public static void register() {
-        PolymerItemGroupUtils.registerPolymerItemGroup(ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "items"), BF_TAB);
+        PolymerItemGroupUtils.registerPolymerItemGroup(Identifier.fromNamespaceAndPath(BabyFat.MOD_ID, "items"), BF_TAB);
     }
 }

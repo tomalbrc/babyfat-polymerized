@@ -10,7 +10,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.levelgen.GenerationStep;
 
@@ -28,7 +28,7 @@ public class BabyFat implements ModInitializer {
 		BFTabs.register();
 
 		var key = ResourceKey.create(Registries.PLACED_FEATURE,
-				ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "water_lettuce"));
+				Identifier.fromNamespaceAndPath(BabyFat.MOD_ID, "water_lettuce"));
 		BiomeModifications.addFeature(BiomeSelectors.tag(BiomeTags.IS_SAVANNA), GenerationStep.Decoration.VEGETAL_DECORATION, key);
 	}
 }

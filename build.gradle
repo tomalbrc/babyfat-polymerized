@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.11-SNAPSHOT'
+    id 'fabric-loom' version '1.14-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -13,6 +13,7 @@ loom {
 repositories {
     maven { url 'https://maven.tomalbrc.de' }
     maven { url 'https://maven.nucleoid.xyz' }
+    maven { url 'https://maven.blamejared.com' }
     mavenLocal()
 }
 
@@ -61,15 +62,12 @@ java {
     withSourcesJar()
 }
 
-// configure the maven publication
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
         }
     }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
 
     }

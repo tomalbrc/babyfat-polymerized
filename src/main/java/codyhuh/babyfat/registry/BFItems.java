@@ -9,7 +9,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomData;
@@ -19,19 +19,19 @@ import java.util.function.Function;
 
 public class BFItems {
 	public static final Item WATER_LETTUCE = registerItem(
-			ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "water_lettuce"),
-			x -> new PolymerPlaceOnWaterBlockItem(BFBlocks.WATER_LETTUCE, x, Items.PAPER, ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "water_lettuce")),
+			Identifier.fromNamespaceAndPath(BabyFat.MOD_ID, "water_lettuce"),
+			x -> new PolymerPlaceOnWaterBlockItem(BFBlocks.WATER_LETTUCE, x, Items.PAPER, Identifier.fromNamespaceAndPath(BabyFat.MOD_ID, "water_lettuce")),
 			new Item.Properties()
 	);
 
 	public static final Item RANCHU_BUCKET = registerItem(
-			ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "ranchu_bucket"),
+			Identifier.fromNamespaceAndPath(BabyFat.MOD_ID, "ranchu_bucket"),
 			x -> new RanchuBucketItem(BFEntities.RANCHU, Fluids.WATER, x),
 			new Item.Properties().stacksTo(1).component(DataComponents.BUCKET_ENTITY_DATA, CustomData.EMPTY)
 	);
 
 	public static final Item RANCHU_SPAWN_EGG = registerItem(
-			ResourceLocation.fromNamespaceAndPath(BabyFat.MOD_ID, "ranchu_spawn_egg"),
+			Identifier.fromNamespaceAndPath(BabyFat.MOD_ID, "ranchu_spawn_egg"),
 			x -> new VanillaPolymerSpawnEggItem(BFEntities.RANCHU, Items.PARROT_SPAWN_EGG, x),
 			new Item.Properties()
 	);
@@ -42,7 +42,7 @@ public class BFItems {
 		BFTabs.addItem(RANCHU_SPAWN_EGG);
 	}
 
-	public static <T extends Item> T registerItem(ResourceLocation identifier, Function<Item.Properties, T> function, Item.Properties properties) {
+	public static <T extends Item> T registerItem(Identifier identifier, Function<Item.Properties, T> function, Item.Properties properties) {
 		ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, identifier);
 		T item = function.apply(properties.setId(key));
 		Registry.register(BuiltInRegistries.ITEM, key, item);
