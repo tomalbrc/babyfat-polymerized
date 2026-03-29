@@ -7,6 +7,7 @@ import eu.pb4.polymer.blocks.api.BlockModelType;
 import eu.pb4.polymer.blocks.api.PolymerBlockModel;
 import eu.pb4.polymer.blocks.api.PolymerBlockResourceUtils;
 import eu.pb4.polymer.blocks.api.PolymerTexturedBlock;
+import net.fabricmc.fabric.api.networking.v1.context.PacketContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
@@ -22,7 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.NotNull;
-import xyz.nucleoid.packettweaker.PacketContext;
+import org.jspecify.annotations.NonNull;
 
 public class WaterLettuceBlock extends VegetationBlock implements BonemealableBlock, PolymerTexturedBlock {
     private final BlockState polymerBlockState;
@@ -33,7 +34,7 @@ public class WaterLettuceBlock extends VegetationBlock implements BonemealableBl
 	public WaterLettuceBlock(BlockBehaviour.Properties properties) {
 		super(properties);
         PolymerBlockModel blockModel = PolymerBlockModel.of(Identifier.fromNamespaceAndPath(BabyFat.MOD_ID, "block/water_lettuce"));
-		this.polymerBlockState = PolymerBlockResourceUtils.requestBlock(BlockModelType.PLANT_BLOCK, blockModel);
+		this.polymerBlockState = PolymerBlockResourceUtils.requestBlock(BlockModelType.PLANT, blockModel);
 	}
 
 	@Override
@@ -42,7 +43,7 @@ public class WaterLettuceBlock extends VegetationBlock implements BonemealableBl
 		return CODEC;
 	}
 
-	protected boolean mayPlaceOn(BlockState blockState, BlockGetter level, BlockPos pos) {
+	protected boolean mayPlaceOn(@NonNull BlockState blockState, BlockGetter level, @NonNull BlockPos pos) {
 		FluidState fluidstate = level.getFluidState(pos);
 		FluidState fluidstate1 = level.getFluidState(pos.above());
 		return (fluidstate.getType() == Fluids.WATER || blockState.is(BlockTags.ICE)) && fluidstate1.getType() == Fluids.EMPTY;
@@ -50,15 +51,15 @@ public class WaterLettuceBlock extends VegetationBlock implements BonemealableBl
 
 
 	@Override
-	public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+	public boolean isValidBonemealTarget(@NonNull LevelReader levelReader, @NonNull BlockPos blockPos, @NonNull BlockState blockState) {
 		return true;
 	}
 
-	public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState blockState) {
+	public boolean isBonemealSuccess(@NonNull Level level, @NonNull RandomSource random, @NotNull BlockPos pos, @NonNull BlockState blockState) {
 		return true;
 	}
 
-	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState blockState) {
+	public void performBonemeal(@NonNull ServerLevel level, @NonNull RandomSource random, BlockPos pos, @NonNull BlockState blockState) {
 		boolean flag = false;
 		boolean flag1 = false;
 

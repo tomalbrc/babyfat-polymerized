@@ -1,7 +1,7 @@
 package codyhuh.babyfat.registry;
 
 import codyhuh.babyfat.BabyFat;
-import eu.pb4.polymer.core.api.item.PolymerItemGroupUtils;
+import eu.pb4.polymer.core.api.item.PolymerCreativeModeTabUtils;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -26,6 +26,6 @@ public class BFTabs {
     }
 
     public static void register() {
-        PolymerItemGroupUtils.registerPolymerItemGroup(Identifier.fromNamespaceAndPath(BabyFat.MOD_ID, "items"), BF_TAB);
+        PolymerCreativeModeTabUtils.registerPolymerCreativeModeTab(Identifier.fromNamespaceAndPath(BabyFat.MOD_ID, "items"), BF_TAB);
     }
 }

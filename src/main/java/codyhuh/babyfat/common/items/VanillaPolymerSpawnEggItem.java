@@ -1,6 +1,8 @@
 package codyhuh.babyfat.common.items;
 
 import eu.pb4.polymer.core.api.item.PolymerSpawnEggItem;
+import net.fabricmc.fabric.api.networking.v1.context.PacketContext;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
@@ -9,7 +11,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.TypedEntityData;
-import xyz.nucleoid.packettweaker.PacketContext;
 
 public class VanillaPolymerSpawnEggItem extends PolymerSpawnEggItem {
     public VanillaPolymerSpawnEggItem(EntityType<? extends Mob> type, Item visualItem, Properties settings) {
@@ -17,7 +18,7 @@ public class VanillaPolymerSpawnEggItem extends PolymerSpawnEggItem {
     }
 
     @Override
-    public Identifier getPolymerItemModel(ItemStack itemStack, PacketContext context) {
+    public Identifier getPolymerItemModel(ItemStack itemStack, PacketContext context, HolderLookup.Provider provider) {
         return this.getPolymerItem(itemStack, context).getDefaultInstance().get(DataComponents.ITEM_MODEL);
     }
 }

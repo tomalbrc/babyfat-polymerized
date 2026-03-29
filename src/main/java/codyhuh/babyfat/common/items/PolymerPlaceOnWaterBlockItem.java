@@ -1,12 +1,13 @@
 package codyhuh.babyfat.common.items;
 
 import eu.pb4.polymer.core.api.item.PolymerItem;
+import net.fabricmc.fabric.api.networking.v1.context.PacketContext;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PlaceOnWaterBlockItem;
 import net.minecraft.world.level.block.Block;
-import xyz.nucleoid.packettweaker.PacketContext;
 
 public class PolymerPlaceOnWaterBlockItem extends PlaceOnWaterBlockItem implements PolymerItem {
     private final Identifier modelData;
@@ -24,7 +25,7 @@ public class PolymerPlaceOnWaterBlockItem extends PlaceOnWaterBlockItem implemen
     }
 
     @Override
-    public Identifier getPolymerItemModel(ItemStack itemStack, PacketContext context) {
+    public Identifier getPolymerItemModel(ItemStack itemStack, PacketContext context, HolderLookup.Provider provider) {
         return this.modelData;
     }
 }

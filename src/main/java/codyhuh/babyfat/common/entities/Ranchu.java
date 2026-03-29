@@ -98,8 +98,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	}
 
 	@Override
-	@NotNull
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, EntitySpawnReason reason, @Nullable SpawnGroupData spawnDataIn) {
+    public @Nullable SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor worldIn, @NotNull DifficultyInstance difficultyIn, @NotNull EntitySpawnReason reason, @Nullable SpawnGroupData spawnDataIn) {
 		if (reason == EntitySpawnReason.BUCKET && spawnDataIn != null) {
 			return spawnDataIn;
 		}
@@ -149,14 +148,14 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	}
 
 	@Override
-	public void loadFromBucketTag(CompoundTag compound) {
+	public void loadFromBucketTag(@NotNull CompoundTag compound) {
 		Bucketable.loadDefaultDataFromBucketTag(this, compound);
 		compound.getInt("Variant").ifPresent(this::setVariant);
 		compound.getInt("Age").ifPresent(this::setAge);
 	}
 
 	@Override
-	public void saveToBucketTag(ItemStack bucket) {
+	public void saveToBucketTag(@NotNull ItemStack bucket) {
 		Bucketable.saveDefaultDataToBucketTag(this, bucket);
 		CustomData.update(DataComponents.BUCKET_ENTITY_DATA, bucket, (compoundTag) -> {
 			compoundTag.putInt("Variant", this.getVariant());
@@ -191,7 +190,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	}
 
 	@Override
-	public void addAdditionalSaveData(ValueOutput valueOutput) {
+	public void addAdditionalSaveData(@NotNull ValueOutput valueOutput) {
 		super.addAdditionalSaveData(valueOutput);
 		valueOutput.putInt("Variant", getVariant());
 		valueOutput.putBoolean("FromBucket", this.isFromBucket());
@@ -199,7 +198,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	}
 
 	@Override
-	public void readAdditionalSaveData(ValueInput compound) {
+	public void readAdditionalSaveData(@NotNull ValueInput compound) {
 		super.readAdditionalSaveData(compound);
 		setVariant(Mth.clamp(compound.getInt("Variant").orElseThrow(), 0, MAX_VARIANTS - 1));
 		this.setFromBucket(compound.getBooleanOr("FromBucket", false));
@@ -253,7 +252,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 
 	@Override
 	@NotNull
-	protected PathNavigation createNavigation(Level worldIn) {
+	protected PathNavigation createNavigation(@NotNull Level worldIn) {
 		return new WaterBoundPathNavigation(this, worldIn);
 	}
 
@@ -271,7 +270,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 			this.playSound(this.getFlopSound(), this.getSoundVolume(), this.getVoicePitch());
 		}
 
-		long time = level().getLevelData().getDayTime();
+		long time = level().getDefaultClockTime();
 
 		if (canFindLettuce() && time % 24000 > 23000 && !this.isBaby()) {
 			setInLoveTime(40);
@@ -283,7 +282,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	}
 
 	@Override
-	public void customServerAiStep(ServerLevel serverLevel) {
+	public void customServerAiStep(@NotNull ServerLevel serverLevel) {
 		super.customServerAiStep(serverLevel);
 
 		if (this.forcedAgeTimer > 0) {
@@ -316,7 +315,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	}
 
 	@Override
-	public void travel(Vec3 travelVector) {
+	public void travel(@NotNull Vec3 travelVector) {
 		if (this.isEffectiveAi() && this.isInWater()) {
 			this.moveRelative(0.01F, travelVector);
 			this.move(MoverType.SELF, this.getDeltaMovement());
@@ -331,7 +330,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 
 	@Nullable
 	@Override
-	public Ranchu getBreedOffspring(ServerLevel serverLevel, AgeableMob ranchuB) {
+	public Ranchu getBreedOffspring(@NotNull ServerLevel serverLevel, @NotNull AgeableMob ranchuB) {
 		Ranchu child = BFEntities.RANCHU.create(serverLevel, EntitySpawnReason.BREEDING);
 		assert child != null;
 
@@ -381,7 +380,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+	protected SoundEvent getHurtSound(@NotNull DamageSource damageSourceIn) {
 		return SoundEvents.COD_HURT;
 	}
 
@@ -392,7 +391,7 @@ public class Ranchu extends Animal implements AnimatedEntity, Bucketable {
 
 	@Override
 	@NotNull
-	public InteractionResult mobInteract(Player player, InteractionHand hand) {
+	public InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
 		Optional<InteractionResult> result = Bucketable.bucketMobPickup(player, hand, this);
 
 		if(result.isPresent() && result.get().consumesAction()){

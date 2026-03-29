@@ -19,9 +19,8 @@ import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 public class BFEntities {
-
 	public static final EntityType<Ranchu> RANCHU = register(Identifier.fromNamespaceAndPath(BabyFat.MOD_ID, "ranchu"), FabricEntityType.Builder.createMob(Ranchu::new, MobCategory.WATER_CREATURE, x -> x
-            .spawnRestriction(SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING, Ranchu::checkFishSpawnRules)
+            .spawnPlacement(SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING, Ranchu::checkFishSpawnRules)
             .defaultAttributes(Ranchu::createAttributes)
 	).sized(0.5f, 0.5f));
 
