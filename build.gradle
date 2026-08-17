@@ -11,10 +11,9 @@ loom {
 }
 
 repositories {
-    maven { url 'https://maven.tomalbrc.de' }
     maven { url 'https://maven.nucleoid.xyz' }
-    maven { url 'https://maven.blamejared.com' }
     mavenLocal()
+    maven { url 'https://maven.blamejared.com' }
 }
 
 dependencies {
