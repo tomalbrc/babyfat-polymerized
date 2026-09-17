@@ -2,7 +2,6 @@ package codyhuh.babyfat.common.blocks;
 
 import codyhuh.babyfat.BabyFat;
 import codyhuh.babyfat.registry.BFBlocks;
-import com.mojang.serialization.MapCodec;
 import eu.pb4.polymer.blocks.api.BlockModelType;
 import eu.pb4.polymer.blocks.api.PolymerBlockModel;
 import eu.pb4.polymer.blocks.api.PolymerBlockResourceUtils;
@@ -16,6 +15,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.VegetationBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -28,19 +28,10 @@ import org.jspecify.annotations.NonNull;
 public class WaterLettuceBlock extends VegetationBlock implements BonemealableBlock, PolymerTexturedBlock {
     private final BlockState polymerBlockState;
 
-	public static final MapCodec<WaterLettuceBlock> CODEC = simpleCodec(WaterLettuceBlock::new);
-
-
 	public WaterLettuceBlock(BlockBehaviour.Properties properties) {
 		super(properties);
         PolymerBlockModel blockModel = PolymerBlockModel.of(Identifier.fromNamespaceAndPath(BabyFat.MOD_ID, "block/water_lettuce"));
 		this.polymerBlockState = PolymerBlockResourceUtils.requestBlock(BlockModelType.PLANT, blockModel);
-	}
-
-	@Override
-	@NotNull
-	public MapCodec<? extends VegetationBlock> codec() {
-		return CODEC;
 	}
 
 	protected boolean mayPlaceOn(@NonNull BlockState blockState, BlockGetter level, @NonNull BlockPos pos) {
@@ -51,15 +42,17 @@ public class WaterLettuceBlock extends VegetationBlock implements BonemealableBl
 
 
 	@Override
-	public boolean isValidBonemealTarget(@NonNull LevelReader levelReader, @NonNull BlockPos blockPos, @NonNull BlockState blockState) {
+	public boolean isValidBonemealTarget(@NonNull LevelReader levelReader, @NonNull BlockPos blockPos, @NonNull BlockState blockState, @NonNull BonemealSource bonemealSource) {
 		return true;
 	}
 
-	public boolean isBonemealSuccess(@NonNull Level level, @NonNull RandomSource random, @NotNull BlockPos pos, @NonNull BlockState blockState) {
+    @Override
+	public boolean isBonemealSuccess(@NonNull Level level, @NonNull RandomSource random, @NotNull BlockPos pos, @NonNull BlockState blockState, @NonNull BonemealSource bonemealSource) {
 		return true;
 	}
 
-	public void performBonemeal(@NonNull ServerLevel level, @NonNull RandomSource random, BlockPos pos, @NonNull BlockState blockState) {
+    @Override
+	public void performBonemeal(@NonNull ServerLevel level, @NonNull RandomSource random, BlockPos pos, @NonNull BlockState blockState, @NonNull BonemealSource bonemealSource) {
 		boolean flag = false;
 		boolean flag1 = false;
 
